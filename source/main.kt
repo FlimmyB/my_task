@@ -49,7 +49,7 @@ fun showHelp() {
     println("Show - shows you all pairs")
     println("Add - adds new pair")
     println("Delete - deletes pair")
-    println("Search - finds pair")
+    println("Find - finds pair")
     println("Exit - closes program")
 }
 
@@ -105,30 +105,30 @@ fun delete() {
 }
 
 fun find() {
-    println("Type \"key *your key*\" or \"value *your value*\" split by exactly one space " +
-            "to find all pairs which contain specified key or value")
-    val comds = nextLine().split(" ")
-    if (comds.size != 2) {
-        println("Please split arguments correctly")
-        return find()
-    }
-    val type = comds[0]
-    val word = comds[1]
-    if (type != "key" && type != "value") {
-        println("Please, type \"key\" or \"value\"")
-        return find()
-    }
-    var found = Array(0, { MyPair("", "") })
+    println("Enter a word by which I shall search")
+    val comds = nextLine().trim()
+
+    var foundByKey = Array(0, { MyPair("", "") })
+    var foundByValue = Array(0, { MyPair("", "") })
     pairs!!.forEach {
-        if (type == "key") {
-            if (word in it.key) found += it
-        } else if (word in it.value) found += it
+        if (comds in it.key) foundByKey += it
+        if (comds in it.value) foundByValue += it
     }
-    if (found.isNotEmpty()) {
-        if (found.size == 1) println("I found one element:") else
-            println("I found ${found.size} elements:")
-        found.forEach { println("key:${it.key}    value:${it.value}") }
-    } else println("Nothing found!")
+    when {
+        foundByKey.isEmpty() -> println("No pairs contain this word in keys")
+        foundByKey.size == 1 -> println("One pair has this key:")
+        else -> println("${foundByKey.size} pairs have this word in key:")
+    }
+    foundByKey.forEach { println("key:${it.key}    value:${it.value}") }
+    println()
+    when {
+        foundByValue.isEmpty() -> println("No pairs contain this word in values")
+        foundByValue.size == 1 -> println("One pair has this value:")
+        else -> println("${foundByValue.size} pairs have this word in key:")
+    }
+    foundByValue.forEach { println("key:${it.key}    value:${it.value}") }
+
+
 }
 
 fun main(args: Array<String>) {
@@ -136,12 +136,12 @@ fun main(args: Array<String>) {
     println("Enter your command. Type Help for list of commands")
     var workTime = true
     while (workTime) {
-        when (nextLine().toLowerCase()) {
+        when (nextLine().toLowerCase().trim()) {
             "show" -> showAll()
             "help" -> showHelp()
             "add" -> addNew()
             "delete" -> delete()
-            "search" -> find()
+            "find" -> find()
             "exit" -> workTime = false
             "your command" -> println("haha")
             "your command." -> println("haha")
