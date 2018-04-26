@@ -26,9 +26,16 @@ fun writeCache(values: Array<MyPair>) {
 }
 
 fun readCache(): Array<MyPair> {
-    val jreader = BufferedReader(FileReader("pairs.json"))
     var values = ""
-    jreader.forEachLine { values += it }
+    try {
+        val jreader = BufferedReader(FileReader("pairs.json"))
+        jreader.forEachLine { values += it }
+    } catch (e: FileNotFoundException) {
+        val jwriteer = PrintWriter("pairs.json")
+        jwriteer.print("[]")
+        jwriteer.close()
+        return readCache()
+    }
     return Gson().fromJson(values, Array<MyPair>::class.java)
 }
 
