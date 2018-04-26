@@ -30,6 +30,7 @@ fun readCache(): Array<MyPair> {
     try {
         val jreader = BufferedReader(FileReader("pairs.json"))
         jreader.forEachLine { values += it }
+        if (values.isBlank()) values = "[]"
     } catch (e: FileNotFoundException) {
         val jwriteer = PrintWriter("pairs.json")
         jwriteer.print("[]")
