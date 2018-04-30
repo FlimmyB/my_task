@@ -4,7 +4,7 @@ Hello yes hi.
 
 Run 
 
-kotlinc -cp gson-2.2.2.jar main.kt -d task.jar     to compile
+kotlinc -cp gson-2.2.2.jar source/main.kt -d task.jar     to compile
 
 
 then
